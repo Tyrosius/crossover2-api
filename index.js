@@ -13,7 +13,7 @@ const app = express()
 // middleware applied on all routes to be able to read the req.body in JSON
 app.use(express.json());
 
-
+app.use(cors())
 app.use("/user",userRoutes)
 app.use("/product", productRoutes);
 app.use(errorHandler);
