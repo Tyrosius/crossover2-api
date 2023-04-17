@@ -26,12 +26,12 @@ const createProduct = asyncHandler(async (req, res) => {
 const getProductById = async(req, res) => {
     try {
         const { id } = req.params;
-        const products = await Product.findById({ id });
+        const product = await Product.findById({ _id: id });
 
-        if (!products.length) {
+        if (!product) {
             return res.status(404).json({ message: "No products found."})
         }
-        res.json(products);
+        res.json(product);
     } catch(err) {
             res.status(500).json({ error: err.message });
     }
@@ -41,8 +41,19 @@ const updateSingleProduct=asyncHandler(async(req,res)=>{
     res.send("product updated")
 })
 
-const deleteProduct=asyncHandler(async(req,res)=>{
-    res.send("product deleted")
-})
+const deleteProductById = async(req, res) => {
+    try {
+        const { id } = req.params;
+        const deletedProduct = await Product.findByIdAndDelete(
+            { _id: id }
+        );
+        if (!deletedProduct) {
+            res.status(500).json({ message: "Product not found."})
+        }
+        return res.json(deletedProduct);
+    } catch(err) {
+            res.status(500).json({ error: err.message });
+    }
+}
 
-export { getProducts, createProduct, getProductById, updateSingleProduct, deleteProduct};
+export { getProducts, createProduct, getProductById, updateSingleProduct, deleteProductById};
