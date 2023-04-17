@@ -5,6 +5,7 @@ import errorHandler from "./middleware/errorHandler.js";
 
 import productRoutes from "./routes/products.js";
 import userRoutes from "./routes/user.js";
+import cors from "cors"
 
 
 const port = process.env.Port || 3001
