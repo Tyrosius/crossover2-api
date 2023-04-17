@@ -17,7 +17,12 @@ const productSchema = new Schema ({
     rating: {
         type: String,
         required: [true]
+    },
+    image: {
+        type: String
     }
 })
 
+
 export default model("Product",productSchema)
+

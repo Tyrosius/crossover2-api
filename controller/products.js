@@ -9,13 +9,33 @@ const getProducts = asyncHandler(async (req, res) => {
     res.json(products);
 });
 
-const createProduct=asyncHandler(async(req,res)=>{
-    res.send("product created")
-})
+const createProduct = asyncHandler(async (req, res) => {
+    const { title, price, quantity, rating, image } = req.body;
+    const newProduct = await Product.create({
+      title,
+      price,
+      quantity,
+      rating,
+      image
+    });
+    res.status(201).json(newProduct);
+  });
 
-const getSingleProduct=asyncHandler(async(req,res)=>{
-    res.send("one product")
-})
+  // TODO - currently throwing this error:
+  // 	"error": "Cast to ObjectId failed for value \"{ id: '643d21f6364e4842cfef2461' }\" (type Object) at path \"_id\" for model \"Product\""
+const getProductById = async(req, res) => {
+    try {
+        const { id } = req.params;
+        const products = await Product.findById({ id });
+
+        if (!products.length) {
+            return res.status(404).json({ message: "No products found."})
+        }
+        res.json(products);
+    } catch(err) {
+            res.status(500).json({ error: err.message });
+    }
+}
 
 const updateSingleProduct=asyncHandler(async(req,res)=>{
     res.send("product updated")
@@ -25,4 +45,4 @@ const deleteProduct=asyncHandler(async(req,res)=>{
     res.send("product deleted")
 })
 
-export { getProducts, createProduct,getSingleProduct,updateSingleProduct,deleteProduct};
+export { getProducts, createProduct, getProductById, updateSingleProduct, deleteProduct};
